@@ -1,36 +1,80 @@
-class MultiThreading extends Thread
+class Callable  implements Runnable
 {
-    @Override
+    Thread t;
+    String name;
+    Callable(String name)
+    {
+        t = Thread.currentThread();
+        this.name = name;
+        this.t.setName(this.name);
+    }
     public void run()
     {
-        int i = 1;
-        while(i<=400)
+        int call_count = 0,i;
+        try
         {
-            System.out.println("My cooking thread is running now");
-            System.out.println("I am Happy !!!");
-            i++;
+            t.currentThread().setPriority(Thread.MAX_PRIORITY);
+            
+            for(i=0;i<20;i++)
+            {
+                call_count++;
+                System.out.println("You have called "+call_count+" times");
+                t.sleep(1000);
+            }
+        }
+        catch(InterruptedException e)
+        {
+            System.out.println("Thread Interrupted !!");
+        }
+        finally
+        {
+            System.out.println("Callable Thread has been executed");
         }
     }
 }
-class Clickable extends Thread
+class Caller implements Runnable
 {
-    @Override
+    Thread t;
+    String name;
+    int call_count = 0;
+    Caller(String name)
+    {
+        t = Thread.currentThread();
+        this.name = name;
+        this.t.setName(this.name);
+    }
     public void run()
     {
-        System.out.println("Wohooo !!!! This thread is also Running !!!!");
-        System.out.println("Wah bhai Wah !!!");
-        System.out.print("Java is awesome");
-        System.out.print("I am loving it a lot much more now !!!!!");
+        int call_count = 0,i;
+        try
+        {
+            t.currentThread().setPriority(Thread.MIN_PRIORITY);
+            for(i=0;i<30;i++)
+            {
+                call_count++;
+                System.out.println("You have called from caller class "+call_count+" times");
+                t.sleep(1000);
+            }
+        }
+        catch(InterruptedException e)
+        {
+            System.out.println("Thread Interrupted !!");
+        }
+        finally
+        {
+            System.out.println(" Caller Thread has been executed");
+        }
     }
 }
-class UsingThreading
+class Main
 {
-    public static void main(String args[])
+    public static void main(String[] args) throws InterruptedException
     {
-        MultiThreading m1 = new MultiThreading();
-        Clickable click = new Clickable();
-        m1.start();
-        click.start();
-
+        Callable c1 = new Callable("Callable_Thread");
+        Thread t1 = new Thread(c1);
+        t1.start();
+        Caller c2 = new Caller("Caller_Thread");
+        Thread t2 = new Thread(c2);
+        t2.start();
     }
 }
