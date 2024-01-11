@@ -13,13 +13,13 @@ class Callable  implements Runnable
         int call_count = 0,i;
         try
         {
-            t.currentThread().setPriority(Thread.MAX_PRIORITY);
+            Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
             
             for(i=0;i<20;i++)
             {
                 call_count++;
                 System.out.println("You have called "+call_count+" times");
-                t.sleep(1000);
+                Thread.sleep(1000);
             }
         }
         catch(InterruptedException e)
@@ -48,12 +48,12 @@ class Caller implements Runnable
         int call_count = 0,i;
         try
         {
-            t.currentThread().setPriority(Thread.MIN_PRIORITY);
+            Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
             for(i=0;i<30;i++)
             {
                 call_count++;
                 System.out.println("You have called from caller class "+call_count+" times");
-                t.sleep(1000);
+                Thread.sleep(1000);
             }
         }
         catch(InterruptedException e)
